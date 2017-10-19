@@ -1,0 +1,11 @@
+name: EconomyAPI
+version: 0.1_b1
+author: Paragoumba
+main: fr.paragoumba.minediversity.economyapi.EconomyAPI
+commands:
+ tombola:
+  description: Bonjour
+ money:
+  description: Hello
+ event:
+  description: Hola
