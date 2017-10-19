@@ -49,6 +49,7 @@ public class Why implements Listener {
             pc.set("month", d.getMonth() + 1);
             pc.createSection("year");
             pc.set("year", d.getYear() + 1900);
+
             this.pl.saveConfig();
 
         }
