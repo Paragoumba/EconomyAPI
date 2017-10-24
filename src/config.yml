@@ -1,8 +1,6 @@
-liste des joueurs:
-symbole de l'argent: Lirs
-nombre d'argent minimum: 0
-day:
-month:
-year:
-tombola partiticipant:
-mise a la tombola:
+host: host
+port: port
+database: database
+table: EconomyAPI
+login: login
+password: password

@@ -28,7 +28,7 @@ public class Why implements Listener {
         if (!this.pl.getConfig().getConfigurationSection("liste des joueurs").contains(String.valueOf(p.getUniqueId()))) {
 
             String UUID = String.valueOf(p.getUniqueId());
-            String Name = p.getName();
+            String name = p.getName();
 
             this.pl.getConfig().getConfigurationSection("liste des joueurs").createSection(UUID);
 
@@ -36,13 +36,13 @@ public class Why implements Listener {
             Date d = new Date();
 
             pc.createSection("nom du joueur");
-            pc.set("nom du joueur", Name);
+            pc.set("nom du joueur", name);
             pc.createSection("argent du joueur en banque");
-            pc.set("argent du joueur en banque", Integer.valueOf(20));
+            pc.set("argent du joueur en banque", 20);
             pc.createSection("argent du joueur");
-            pc.set("argent du joueur", Integer.valueOf(20));
+            pc.set("argent du joueur", 20);
             pc.createSection("ticket event");
-            pc.set("ticket event", Integer.valueOf(0));
+            pc.set("ticket event", 0);
             pc.createSection("day");
             pc.set("day", d.getDate());
             pc.createSection("month");
