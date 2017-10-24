@@ -3,9 +3,12 @@ package fr.paragoumba.minediversity.economyapi;
 import fr.paragoumba.minediversity.economyapi.commands.EventCommand;
 import fr.paragoumba.minediversity.economyapi.commands.MoneyCommand;
 import fr.paragoumba.minediversity.economyapi.commands.TombolaCommand;
+import fr.paragoumba.minediversity.economyapi.events.PlayerDeathEventHandler;
+import fr.paragoumba.minediversity.economyapi.events.PlayerJoinEventHandler;
 import fr.paragoumba.minediversity.economyapi.events.Why;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
@@ -23,13 +26,16 @@ public class EconomyAPI extends JavaPlugin implements Listener {
     boolean tombolafinish = false;
     private int timer;
     private int task;
-    
-    static EconomyAPI plugin;
+
+    public static EconomyAPI plugin;
+    public static ChatColor mainColor;
+    public static ChatColor errorColor;
 
     public EconomyAPI(){}
 
     public void onEnable() {
 
+        plugin = this;
         File configFile = new File(this.getDataFolder(), "config.yml");
 
         if (!configFile.exists()) {
@@ -39,9 +45,16 @@ public class EconomyAPI extends JavaPlugin implements Listener {
 
         }
 
+        Database.init();
+
+        Configuration config = getConfig();
+        mainColor = ChatColor.valueOf(config.getString("mainColor"));
+        errorColor = ChatColor.valueOf(config.getString("errorColor"));
+
         //Events
         PluginManager pm = this.getServer().getPluginManager();
-        pm.registerEvents(new Why(this), this);
+        pm.registerEvents(new PlayerJoinEventHandler(), this);
+        pm.registerEvents(new PlayerDeathEventHandler(), this);
 
         //Commands
         this.getCommand("tombola").setExecutor(new TombolaCommand());
@@ -57,7 +70,7 @@ public class EconomyAPI extends JavaPlugin implements Listener {
     @Override
     public void onDisable() {
 
-        System.out.println("API stopper");
+        System.out.println("Disabling EconomyAPI");
 
     }
 
@@ -164,7 +177,7 @@ public class EconomyAPI extends JavaPlugin implements Listener {
 
                         } else {
 
-                            px.sendMessage("§fVous avez perdu la tombola mais ce n'est pas grave Vous pouvez réésayer !");
+                            px.sendMessage("§fVous avez perdu la tombola mais ce n'est pas grave. Vous pouvez réessayer !");
 
                         }
                     }
@@ -178,41 +191,5 @@ public class EconomyAPI extends JavaPlugin implements Listener {
             }
 
         }, 2L, 2L);
-    }
-
-    public static void addMoney(Player p, int amount){
-
-        Why.addMoney(p, amount);
-
-    }
-
-    public static void removeMoney(Player p, int amount){
-
-        Why.removeMoney(p, amount);
-
-    }
-
-    public static void getMoney(Player p, int amount){
-
-        Why.getMoney(p);
-
-    }
-
-    public static void addTicket(Player p, int amount){
-
-        Why.addTicket(p, amount);
-
-    }
-
-    public static void removeTicket(Player p, int amount){
-
-        Why.removeTicket(p, amount);
-
-    }
-
-    public static void getTicket(Player p, int amount){
-
-        Why.getTicket(p);
-
     }
 }

@@ -4,3 +4,5 @@ database: database
 table: EconomyAPI
 login: login
 password: password
+mainColor: GOLD
+errorColor: RED
