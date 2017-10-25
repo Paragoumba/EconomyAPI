@@ -10,6 +10,10 @@ import org.bukkit.entity.Player;
 
 import java.util.Iterator;
 
+/**
+ * @deprecated
+ */
+
 @Deprecated
 public class EventCommand implements CommandExecutor {
 
