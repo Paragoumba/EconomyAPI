@@ -4,7 +4,7 @@ import fr.paragoumba.minediversity.economyapi.Database;
 import org.bukkit.entity.Player;
 
 /**
- * Cette classe contient toutes les informations concernant le porte-monnaie et le compte en banque du joueur.
+ * Contient toutes les informations concernant le porte-monnaie et le compte en banque du joueur.
  */
 
 public class Account {

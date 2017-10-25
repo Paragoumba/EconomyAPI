@@ -1,5 +1,6 @@
 package fr.paragoumba.minediversity.economyapi.events;
 
+import fr.paragoumba.minediversity.economyapi.Database;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -17,32 +18,13 @@ import static fr.paragoumba.minediversity.economyapi.EconomyAPI.plugin;
 public class PlayerJoinEventHandler implements Listener {
 
     @EventHandler
-    public void playerJoin(PlayerJoinEvent e) {
+    public void playerJoin(PlayerJoinEvent event) {
 
-        Player p = e.getPlayer();
+        Player player = event.getPlayer();
 
-        if (!plugin.getConfig().getConfigurationSection("liste des joueurs").contains(String.valueOf(p.getUniqueId()))) {
+        if (!Database.getTombolaParticipant(player)) {
 
-            String UUID = String.valueOf(p.getUniqueId());
-            String Name = p.getName();
-            plugin.getConfig().getConfigurationSection("liste des joueurs").createSection(UUID);
-            ConfigurationSection pc = plugin.getConfig().getConfigurationSection("liste des joueurs").getConfigurationSection(UUID);
-            Date d = new Date();
-            pc.createSection("nom du joueur");
-            pc.set("nom du joueur", Name);
-            pc.createSection("argent du joueur en banque");
-            pc.set("argent du joueur en banque", Integer.valueOf(20));
-            pc.createSection("argent du joueur");
-            pc.set("argent du joueur", Integer.valueOf(20));
-            pc.createSection("ticket event");
-            pc.set("ticket event", Integer.valueOf(0));
-            pc.createSection("day");
-            pc.set("day", d.getDate());
-            pc.createSection("month");
-            pc.set("month", d.getMonth() + 1);
-            pc.createSection("year");
-            pc.set("year", d.getYear() + 1900);
-            plugin.saveConfig();
+            player.sendMessage("Veux-tu participer à la tombola ? Pour plus d'infos, fais /tombola infos !");
 
         }
     }

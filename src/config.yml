@@ -1,8 +1,11 @@
 host: host
-port: port
+port: 3306
 database: database
-table: EconomyAPI
+bankTable: Bank
+tombolaTable: Tombola
 login: login
 password: password
 mainColor: GOLD
 errorColor: RED
+moneySymbol: £
+tombolaPrice: 50

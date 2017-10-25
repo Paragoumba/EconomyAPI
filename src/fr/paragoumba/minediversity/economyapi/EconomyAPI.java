@@ -1,11 +1,11 @@
 package fr.paragoumba.minediversity.economyapi;
 
+import fr.paragoumba.minediversity.economyapi.commands.APIReloadCommand;
 import fr.paragoumba.minediversity.economyapi.commands.EventCommand;
 import fr.paragoumba.minediversity.economyapi.commands.MoneyCommand;
 import fr.paragoumba.minediversity.economyapi.commands.TombolaCommand;
 import fr.paragoumba.minediversity.economyapi.events.PlayerDeathEventHandler;
 import fr.paragoumba.minediversity.economyapi.events.PlayerJoinEventHandler;
-import fr.paragoumba.minediversity.economyapi.events.Why;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.Configuration;
@@ -17,6 +17,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Random;
 
@@ -30,8 +31,9 @@ public class EconomyAPI extends JavaPlugin implements Listener {
     public static EconomyAPI plugin;
     public static ChatColor mainColor;
     public static ChatColor errorColor;
-
-    public EconomyAPI(){}
+    public static String moneySymbol;
+    public static double tombolaPrice;
+    public static HashMap<String, String>commandsArgs = new HashMap<>();
 
     public void onEnable() {
 
@@ -45,11 +47,7 @@ public class EconomyAPI extends JavaPlugin implements Listener {
 
         }
 
-        Database.init();
-
-        Configuration config = getConfig();
-        mainColor = ChatColor.valueOf(config.getString("mainColor"));
-        errorColor = ChatColor.valueOf(config.getString("errorColor"));
+        init();
 
         //Events
         PluginManager pm = this.getServer().getPluginManager();
@@ -57,11 +55,19 @@ public class EconomyAPI extends JavaPlugin implements Listener {
         pm.registerEvents(new PlayerDeathEventHandler(), this);
 
         //Commands
-        this.getCommand("tombola").setExecutor(new TombolaCommand());
-        this.getCommand("money").setExecutor(new MoneyCommand());
-        this.getCommand("event").setExecutor(new EventCommand());
+        getCommand("tombola").setExecutor(new TombolaCommand());
+        getCommand("money").setExecutor(new MoneyCommand());
+        //getCommand("event").setExecutor(new EventCommand());
+        getCommand("apireload").setExecutor(new APIReloadCommand());
 
-        this.boucle(-1);
+        commandsArgs.put("add", "/ticket create <raison>");
+        commandsArgs.put("sub", "/ticket list");
+        commandsArgs.put("set", "/ticket take <id>");
+        commandsArgs.put("give", "/ticket close <id>");
+        commandsArgs.put("", "/ticket reload");
+        commandsArgs.put("", "/ticket reset");
+
+        boucle(-1);
 
         System.out.println("Initialization done.");
 
@@ -74,7 +80,21 @@ public class EconomyAPI extends JavaPlugin implements Listener {
 
     }
 
+    public static void init(){
+
+        Database.init();
+
+        Configuration config = plugin.getConfig();
+        mainColor = ChatColor.valueOf(config.getString("mainColor"));
+        errorColor = ChatColor.valueOf(config.getString("errorColor"));
+        moneySymbol = config.getString("moneySymbol");
+        tombolaPrice = config.getDouble("tombolaPrice");
+
+    }
+
+    @Deprecated
     public void boucle(int i) {
+
         this.timer = i;
         this.task = Bukkit.getScheduler().scheduleSyncRepeatingTask(this, () -> {
 
