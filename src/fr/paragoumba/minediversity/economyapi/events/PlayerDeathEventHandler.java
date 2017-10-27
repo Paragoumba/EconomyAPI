@@ -1,6 +1,6 @@
 package fr.paragoumba.minediversity.economyapi.events;
 
-import fr.paragoumba.minediversity.economyapi.objects.Account;
+import fr.paragoumba.minediversity.economyapi.objects.PlayerAccount;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -16,7 +16,7 @@ public class PlayerDeathEventHandler implements Listener {
     public void onPlayerDeathEvent(PlayerDeathEvent event) {
 
         Player player = event.getEntity();
-        Account account = new Account(player);
+        PlayerAccount account = new PlayerAccount(player);
 
         player.sendMessage("§fVous avez §6perdu §fl'argent de votre porte monnaie : §6" + account.getWalletFunds() +"§f.");
         account.setWalletFunds(0);

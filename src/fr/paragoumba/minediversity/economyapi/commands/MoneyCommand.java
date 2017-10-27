@@ -40,7 +40,7 @@ public class MoneyCommand implements CommandExecutor {
 
                                     receiver.sendMessage("Dieu vous a ajouté " + mainColor + strings[2] + moneySymbol + " " + ChatColor.RESET + "sur votre compte.");
                                     player.sendMessage("Vous venez d'ajouté " + mainColor + strings[2] + moneySymbol + " " + ChatColor.RESET + "sur le compte de " + mainColor + receiver.getName() + ChatColor.RESET + ".");
-                                    Database.addBankFunds(receiver, amount);
+                                    Database.addPlayerBankFunds(receiver, amount);
 
                                 } else {
 
@@ -81,7 +81,7 @@ public class MoneyCommand implements CommandExecutor {
 
                                     receiver.sendMessage("Dieu a fixé votre compte à " + mainColor + amount + moneySymbol + ChatColor.RESET + ".");
                                     player.sendMessage("Vous venez de définir le compte de " + mainColor + receiver.getName() + " §fà §6" + amount + "£§f.");
-                                    Database.setBankFunds(player, amount);
+                                    Database.setPlayerBankFunds(player, amount);
 
                                 } else {
 
@@ -120,7 +120,7 @@ public class MoneyCommand implements CommandExecutor {
 
                                     receiver.sendMessage("Dieu a retiré " + mainColor + strings[2] + moneySymbol + " " + ChatColor.RESET + "de votre porte-monnaie.");
                                     player.sendMessage("Vous venez de retirer " + mainColor + strings[2] + moneySymbol + " " + ChatColor.RESET + "du porte-monnaie de " + mainColor + receiver.getName() + ChatColor.RESET + ".");
-                                    Database.subBankFunds(receiver, amount);
+                                    Database.subPlayerBankFunds(receiver, amount);
 
                                 } else {
 
@@ -197,13 +197,13 @@ public class MoneyCommand implements CommandExecutor {
 
                             if (receiver != null) {
 
-                                if (Database.getBankFunds(player) >= amount) {
+                                if (Database.getPlayerBankFunds(player) >= amount) {
 
                                     if (!receiver.getName().equals(player.getName())) {
 
-                                        Database.addBankFunds(receiver, amount);
+                                        Database.addPlayerBankFunds(receiver, amount);
                                         receiver.sendMessage("Vous avez reçu " + mainColor + amount + moneySymbol + ChatColor.RESET + " de la part de " + mainColor + player.getName() + ChatColor.RESET + ".");
-                                        Database.subBankFunds(player, amount);
+                                        Database.subPlayerBankFunds(player, amount);
                                         player.sendMessage("Vous avez donné " + mainColor + amount + moneySymbol + ChatColor.RESET + " à " + mainColor + receiver.getName() + ChatColor.RESET + ".");
 
                                     }

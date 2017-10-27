@@ -76,7 +76,7 @@ public class EventCommand implements CommandExecutor {
                                 player.sendMessage("§fDieu a fixé votre compte de tickets a §6" + args[2] + "£.");
                                 PLmoney = Integer.valueOf(args[2]).intValue();
                                 Why.removeTicket(player, Why.getTicket(player));
-                                Database.addBankFunds(player, PLmoney);
+                                Database.addPlayerBankFunds(player, PLmoney);
 
                             }
 

@@ -1,8 +1,10 @@
 host: host
 port: 3306
 database: database
-bankTable: Bank
+playersBankTable: PlayersBank
+entBankTable: EntBank
 tombolaTable: Tombola
+tombolaWinTable: TombolaWin
 login: login
 password: password
 mainColor: GOLD

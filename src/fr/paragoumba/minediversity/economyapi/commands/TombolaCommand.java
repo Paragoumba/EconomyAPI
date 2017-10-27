@@ -5,36 +5,39 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 
-import static fr.paragoumba.minediversity.economyapi.EconomyAPI.mainColor;
-import static fr.paragoumba.minediversity.economyapi.EconomyAPI.moneySymbol;
+import java.util.List;
+import java.util.Random;
+
+import static fr.paragoumba.minediversity.economyapi.EconomyAPI.*;
 
 public class TombolaCommand implements CommandExecutor {
 
     @Override
-    public boolean onCommand(CommandSender sender, Command cmd, String msg, String[] args) {
+    public boolean onCommand(CommandSender commandSender, Command command, String s, String[] strings) {
 
-        if (sender instanceof Player) {
+        if (commandSender instanceof Player) {
 
-            Player player = (Player)sender;
+            Player player = (Player)commandSender;
 
-            switch(msg){
+            switch(s){
 
                 case "play":
 
                     if (!Database.getTombolaParticipant(player)) {
 
-                        if (Database.getBankFunds(player) >= 50) {
+                        if (Database.getPlayerBankFunds(player) >= tombolaPrice) {
 
-                            Database.subBankFunds(player, 50);
+                            Database.subPlayerBankFunds(player, tombolaPrice);
                             Database.addTombolaParticipant(player);
                             player.sendMessage("Vous participez maintenant à tombola.");
-                            player.sendMessage(mainColor + "50" + moneySymbol + ChatColor.RESET + " vous ont été retirés.");
+                            player.sendMessage(mainColor + "" + tombolaPrice + moneySymbol + ChatColor.RESET + " vous ont été retirés.");
 
                         } else {
 
-                            player.sendMessage("Vous n'avez pas assez d'argent sur votre compte bancaire pour participer. Il vous faut " + mainColor + "50" + ChatColor.RESET + "£");
+                            player.sendMessage("Vous n'avez pas assez d'argent sur votre compte bancaire pour participer. Il vous faut " + mainColor + "" + tombolaPrice + ChatColor.RESET + "£");
 
                         }
 
@@ -43,14 +46,31 @@ public class TombolaCommand implements CommandExecutor {
                         player.sendMessage("Vous participez déjà à la tombola.");
 
                     }
-                    break;
 
-                case "infos":
+                    return true;
+            }
 
-                    player.sendMessage("Une tombola est organisée chaque jour. La participation coûte " + moneySymbol + " et se fait avec la commande /tombola participe");
+            player.sendMessage("-§6[§f|§6]§f-------------------§6Tombola' Help§f------------------§6[§f|§6]§f-\n" +
+                    "/tombola play : Vous incrit à la tombola." +
+                    "L'inscription à la tombola coûte " + tombolaPrice + moneySymbol + "\n" +
+                    "Une tombola est organisée tous les jours et le tirage au sort se fait à " + mainColor + "22h" + ChatColor.RESET + ".");
+
+            player.sendMessage("-§6[§f|§6]§f-------------------§6Tombola' Help§f------------------§6[§f|§6]§f-");
+            return true;
+
+        } else if (commandSender instanceof ConsoleCommandSender){
+
+            if (strings.length > 0 && strings[0].equalsIgnoreCase("launch")){
+
+                List<Player> participants = Database.getTombolaParticipants();
+                Player winner = participants.get((int) Math.round(Math.random() * participants.size()));
+
+                Database.setTombolaWinner(winner);
+
             }
         }
 
-        return false;
+        commandSender.sendMessage("Only players can use this command. ¯\\_(ツ)_/¯");
+        return true;
     }
 }
