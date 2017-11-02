@@ -40,7 +40,7 @@ public class Database {
         try(Connection connection = DriverManager.getConnection(url, login, password);
             Statement state = connection.createStatement()){
 
-            state.executeUpdate("INSERT INTO " + database + ".`" + playersBankTable +"` VALUES ('" + player.getUniqueId() + "', '" + player.getName() + "', 0);");
+            state.executeUpdate("INSERT INTO " + database + ".`" + playersBankTable +"` VALUES ('" + player.getUniqueId() + "', '" + player.getName() + "', 0.0, 0.0);");
 
         } catch (Exception e) {
 
@@ -58,9 +58,7 @@ public class Database {
 
         try(Connection connection = DriverManager.getConnection(url, login, password);
             Statement state = connection.createStatement();
-            ResultSet result = state.executeQuery("SELECT * FROM " + database + ".`" + playersBankTable + "` WHERE player = '" + player.getUniqueId().toString() + "'")){
-
-            System.out.println("UUID " + player.getUniqueId() + ":" + player.getUniqueId().toString());
+            ResultSet result = state.executeQuery("SELECT * FROM " + database + ".`" + playersBankTable + "` WHERE player = '" + player.getUniqueId() + "'")){
 
             return result.next();
 
@@ -83,7 +81,7 @@ public class Database {
 
         try(Connection connection = DriverManager.getConnection(url, login, password);
             Statement state = connection.createStatement();
-            ResultSet result = state.executeQuery("SELECT lastPseudo FROM " + database + ".`" + playersBankTable + "` WHERE player = '" + player.getUniqueId().toString() + "'")){
+            ResultSet result = state.executeQuery("SELECT lastPseudo FROM " + database + ".`" + playersBankTable + "` WHERE player = '" + player.getUniqueId() + "'")){
 
             String lastPseudo = "NULL";
 
@@ -115,7 +113,7 @@ public class Database {
 
         try(Connection connection = DriverManager.getConnection(url, login, password);
             Statement state = connection.createStatement();
-            ResultSet result = state.executeQuery("SELECT walletFunds FROM " + database + ".`" + playersBankTable + "` WHERE player = '" + player.getUniqueId().toString() + "'")){
+            ResultSet result = state.executeQuery("SELECT walletFunds FROM " + database + ".`" + playersBankTable + "` WHERE player = '" + player.getUniqueId() + "'")){
 
             result.next();
             return result.getDouble("walletFunds");
@@ -141,7 +139,7 @@ public class Database {
         try(Connection connection = DriverManager.getConnection(url, login, password);
             Statement state = connection.createStatement()){
 
-            state.executeUpdate("UPDATE " + database + ".`" + playersBankTable + "` SET walletFunds = " + amount + " WHERE player = '" + player.getUniqueId().toString() + "'");
+            state.executeUpdate("UPDATE " + database + ".`" + playersBankTable + "` SET walletFunds = " + amount + " WHERE player = '" + player.getUniqueId() + "'");
 
             return true;
 
@@ -165,7 +163,7 @@ public class Database {
         try(Connection connection = DriverManager.getConnection(url, login, password);
             Statement state = connection.createStatement()){
 
-            state.executeUpdate("UPDATE " + database + ".`" + playersBankTable + "` SET walletFunds = walletFunds + " + amount + " WHERE player = '" + player.getUniqueId().toString() + "'");
+            state.executeUpdate("UPDATE " + database + ".`" + playersBankTable + "` SET walletFunds = walletFunds + " + amount + " WHERE player = '" + player.getUniqueId() + "'");
 
             return true;
 
@@ -189,7 +187,7 @@ public class Database {
         try(Connection connection = DriverManager.getConnection(url, login, password);
             Statement state = connection.createStatement()){
 
-            state.executeUpdate("UPDATE " + database + ".`" + playersBankTable + "` SET walletFunds = walletFunds - " + amount + " WHERE player = '" + player.getUniqueId().toString() + "'");
+            state.executeUpdate("UPDATE " + database + ".`" + playersBankTable + "` SET walletFunds = walletFunds - " + amount + " WHERE player = '" + player.getUniqueId() + "'");
 
             return true;
 
@@ -211,7 +209,7 @@ public class Database {
 
         try(Connection connection = DriverManager.getConnection(url, login, password);
             Statement state = connection.createStatement();
-            ResultSet result = state.executeQuery("SELECT bankFunds FROM " + database + ".`" + playersBankTable + "` WHERE player = '" + player.getUniqueId().toString() + "'")){
+            ResultSet result = state.executeQuery("SELECT bankFunds FROM " + database + ".`" + playersBankTable + "` WHERE player = '" + player.getUniqueId() + "'")){
 
             result.next();
             return result.getDouble("bankFunds");
@@ -232,6 +230,8 @@ public class Database {
      * @return L'argent présent sur le compte bancaire de l'entreprise.
      */
     public static double getEntBankFunds(String name){
+
+        name = patch(name);
 
         try(Connection connection = DriverManager.getConnection(url, login, password);
             Statement state = connection.createStatement();
@@ -261,7 +261,7 @@ public class Database {
         try(Connection connection = DriverManager.getConnection(url, login, password);
             Statement state = connection.createStatement()){
 
-            state.executeUpdate("UPDATE " + database + ".`" + playersBankTable + "` SET bankFunds = " + amount + " WHERE player = '" + player.getUniqueId().toString() + "'");
+            state.executeUpdate("UPDATE " + database + ".`" + playersBankTable + "` SET bankFunds = " + amount + " WHERE player = '" + player.getUniqueId() + "'");
 
             return true;
 
@@ -281,6 +281,8 @@ public class Database {
      * @return true si la transaction a réussi, sinon false.
      */
     public static boolean setEntBankFunds(String name, double amount){
+
+        name = patch(name);
 
         try(Connection connection = DriverManager.getConnection(url, login, password);
             Statement state = connection.createStatement()){
@@ -309,7 +311,7 @@ public class Database {
         try(Connection connection = DriverManager.getConnection(url, login, password);
             Statement state = connection.createStatement()){
 
-            state.executeUpdate("UPDATE " + database + ".`" + playersBankTable + "` SET bankFunds = bankFunds + " + amount + " WHERE player = '" + player.getUniqueId().toString() + "'");
+            state.executeUpdate("UPDATE " + database + ".`" + playersBankTable + "` SET bankFunds = bankFunds + " + amount + " WHERE player = '" + player.getUniqueId() + "'");
 
             return true;
 
@@ -329,6 +331,8 @@ public class Database {
      * @return true si la transaction a réussi, sinon false.
      */
     public static boolean addEntBankFunds(String name, double amount){
+
+        name = patch(name);
 
         try(Connection connection = DriverManager.getConnection(url, login, password);
             Statement state = connection.createStatement()){
@@ -357,7 +361,7 @@ public class Database {
         try(Connection connection = DriverManager.getConnection(url, login, password);
             Statement state = connection.createStatement()){
 
-            state.executeUpdate("UPDATE " + database + ".`" + playersBankTable + "` SET bankFunds = bankFunds - " + amount + " WHERE player = '" + player.getUniqueId().toString() + "'");
+            state.executeUpdate("UPDATE " + database + ".`" + playersBankTable + "` SET bankFunds = bankFunds - " + amount + " WHERE player = '" + player.getUniqueId() + "'");
 
             return true;
 
@@ -378,6 +382,8 @@ public class Database {
      */
     public static boolean subEntBankFunds(String name, double amount){
 
+        name = patch(name);
+
         try(Connection connection = DriverManager.getConnection(url, login, password);
             Statement state = connection.createStatement()){
 
@@ -394,17 +400,17 @@ public class Database {
         return false;
     }
 
-    public static LinkedList<AbstractMap.SimpleEntry<Player, Double>> getAllBankFunds(){
+    public static LinkedList<AbstractMap.SimpleEntry<String, Double>> getAllBankFunds(){
 
         try(Connection connection = DriverManager.getConnection(url, login, password);
             Statement state = connection.createStatement();
-            ResultSet result = state.executeQuery("SELECT player, bankFunds FROM " + database + ".`" + tombolaTable + "`")){
+            ResultSet result = state.executeQuery("SELECT lastPseudo, bankFunds FROM " + database + ".`" + playersBankTable + "`")){
 
-            LinkedList<AbstractMap.SimpleEntry<Player, Double>> funds = new LinkedList<>();
+            LinkedList<AbstractMap.SimpleEntry<String, Double>> funds = new LinkedList<>();
 
             while (result.next()){
 
-                funds.add(new AbstractMap.SimpleEntry<>(Bukkit.getPlayer(result.getString("player")), result.getDouble("bankFunds")));
+                funds.add(new AbstractMap.SimpleEntry<>(result.getString("lastPseudo"), result.getDouble("bankFunds")));
 
             }
 
@@ -412,7 +418,7 @@ public class Database {
 
         } catch (Exception e) {
 
-            Bukkit.getLogger().log(Level.SEVERE, "Error in getting tombola's participants.");
+            Bukkit.getLogger().log(Level.SEVERE, "Error in getting bank's funds.");
             e.printStackTrace();
 
         }
@@ -498,7 +504,7 @@ public class Database {
         try(Connection connection = DriverManager.getConnection(url, login, password);
             Statement state = connection.createStatement()){
 
-            state.executeUpdate("INSERT INTO " + database + ".`" + tombolaTable + "` VALUES ('" + player.getUniqueId().toString() + "'" + ")");
+            state.executeUpdate("INSERT INTO " + database + ".`" + tombolaTable + "` VALUES ('" + player.getUniqueId() + "'" + ")");
 
         } catch (Exception e) {
 
@@ -538,7 +544,7 @@ public class Database {
 
         try(Connection connection = DriverManager.getConnection(url, login, password);
             Statement state = connection.createStatement();
-            ResultSet result = state.executeQuery("SELECT player FROM " + database + ".`" + tombolaTable + "` WHERE player = '" + player.getUniqueId().toString() + "'")){
+            ResultSet result = state.executeQuery("SELECT player FROM " + database + ".`" + tombolaTable + "` WHERE player = '" + player.getUniqueId() + "'")){
 
             return result.next();
 
@@ -751,5 +757,14 @@ public class Database {
             e.printStackTrace();
 
         }
+    }
+
+    private static String patch(String str){
+
+        str = str.replaceAll("'", "''");
+        str = str.replaceAll("\"", "\"\"");
+
+        return str;
+
     }
 }

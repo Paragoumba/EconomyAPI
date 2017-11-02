@@ -11,3 +11,6 @@ mainColor: GOLD
 errorColor: RED
 moneySymbol: £
 tombolaPrice: 50
+accessErrorMessage: "Vous n'avez pas accès à cette commande."
+amountErrorMessage: "Le montant doit être un nombre."
+playerErrorMessage: "Ce joueur n'est pas connecté."

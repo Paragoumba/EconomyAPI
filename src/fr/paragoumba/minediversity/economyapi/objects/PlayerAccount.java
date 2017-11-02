@@ -18,8 +18,8 @@ public class PlayerAccount implements Account {
     private Player owner;
 
     /**
-     * Permet de récupèrer le possesseur du compte.
-     * @return Le joueur qui possède le compte.
+     * Permet de récupèrer le nom du possesseur du compte.
+     * @return Le nom du joueur qui possède le compte.
      */
     @Override
     public String getName(){
@@ -28,6 +28,10 @@ public class PlayerAccount implements Account {
 
     }
 
+    /**
+     * Permet de récupèrer le possesseur du compte.
+     * @return Le joueur qui possède le compte.
+     */
     public Player getOwner(){
 
         return owner;
@@ -56,34 +60,34 @@ public class PlayerAccount implements Account {
 
     /**
      * Permet de définir l'argent présent dans le porte-monnaie du joueur.
-     * @param funds L'argent à mettre dans le porte-monnaie du joueur.
+     * @param amount L'argent à mettre dans le porte-monnaie du joueur.
      * @return true si la transaction a réussi, sinon false.
      */
-    public boolean setWalletFunds(double funds){
+    public boolean setWalletFunds(double amount){
 
-        return Database.setWalletFunds(owner, funds);
+        return Database.setWalletFunds(owner, amount);
 
     }
 
     /**
      * Permet d'ajouter de l'argent dans le porte-monnaie du joueur.
-     * @param funds L'argent à ajouter au porte-monnaie du joueur.
+     * @param amount L'argent à ajouter au porte-monnaie du joueur.
      * @return true si la transaction a réussi, sinon false.
      */
-    public boolean addWalletFunds(double funds){
+    public boolean addWalletFunds(double amount){
 
-        return Database.addWalletFunds(owner, funds);
+        return Database.addWalletFunds(owner, amount);
 
     }
 
     /**
      * Permet de retirer de l'argent dans le porte-monnaie du joueur.
-     * @param funds L'argent à retirer du porte-monnaie du joueur.
+     * @param amount L'argent à retirer du porte-monnaie du joueur.
      * @return true si la transaction a réussi, sinon false.
      */
-    public boolean subWalletFunds(double funds){
+    public boolean subWalletFunds(double amount){
 
-        return Database.subWalletFunds(owner, funds);
+        return Database.subWalletFunds(owner, amount);
 
     }
 
@@ -100,37 +104,37 @@ public class PlayerAccount implements Account {
 
     /**
      * Permet de définir l'argent présent sur le compte bancaire du joueur.
-     * @param funds L'argent à mettre sur le compte bancaire du joueur.
+     * @param amount L'argent à mettre sur le compte bancaire du joueur.
      * @return true si la transaction a réussi, sinon false.
      */
     @Override
-    public boolean setBankFunds(double funds){
+    public boolean setBankFunds(double amount){
 
-        return Database.setPlayerBankFunds(owner, funds);
+        return Database.setPlayerBankFunds(owner, amount);
 
     }
 
     /**
      * Permet d'ajouter de l'argent sur le compte bancaire du joueur.
-     * @param funds L'argent à ajouter au compte bancaire du joueur.
+     * @param amount L'argent à ajouter au compte bancaire du joueur.
      * @return true si la transaction a réussi, sinon false.
      */
     @Override
-    public boolean addBankFunds(double funds){
+    public boolean addBankFunds(double amount){
 
-        return Database.addPlayerBankFunds(owner, funds);
+        return Database.addPlayerBankFunds(owner, amount);
 
     }
 
     /**
      * Permet de retirer de l'argent du compte bancaire du joueur.
-     * @param funds L'argent à retirer du compte bancaire du joueur.
+     * @param amount L'argent à retirer du compte bancaire du joueur.
      * @return true si la transaction a réussi, sinon false.
      */
     @Override
-    public boolean subBankFunds(double funds){
+    public boolean subBankFunds(double amount){
 
-        return Database.subPlayerBankFunds(owner, funds);
+        return Database.subPlayerBankFunds(owner, amount);
 
     }
 }

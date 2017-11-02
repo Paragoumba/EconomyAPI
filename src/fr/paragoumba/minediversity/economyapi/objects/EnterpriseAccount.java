@@ -16,6 +16,10 @@ public class EnterpriseAccount implements Account {
 
     private String name;
 
+    /**
+     * Permet de récupèrer le nom de l'entrprise qui possède le compte.
+     * @return Le nom de l'entrprise qui possède le compte.
+     */
     @Override
     public String getName() {
 
@@ -23,6 +27,10 @@ public class EnterpriseAccount implements Account {
 
     }
 
+    /**
+     * Permet de récupèrer l'argent présent sur le compte bancaire de l'entreprise.
+     * @return L'argent sur le compte bancaire de l'entreprise.
+     */
     @Override
     public double getBankFunds() {
 
@@ -30,6 +38,11 @@ public class EnterpriseAccount implements Account {
 
     }
 
+    /**
+     * Permet de définir l'argent présent sur le compte bancaire de l'entreprise.
+     * @param amount L'argent à mettre sur le compte bancaire de l'entreprise.
+     * @return true si la transaction a réussi, sinon false.
+     */
     @Override
     public boolean setBankFunds(double amount) {
 
@@ -37,6 +50,11 @@ public class EnterpriseAccount implements Account {
 
     }
 
+    /**
+     * Permet d'ajouter de l'argent sur le compte bancaire de l'entreprise.
+     * @param amount L'argent à ajouter au compte bancaire de l'entreprise.
+     * @return true si la transaction a réussi, sinon false.
+     */
     @Override
     public boolean addBankFunds(double amount) {
 
@@ -44,6 +62,11 @@ public class EnterpriseAccount implements Account {
 
     }
 
+    /**
+     * Permet de retirer de l'argent du compte bancaire de l'entreprise.
+     * @param amount L'argent à retirer du compte bancaire de l'entreprise.
+     * @return true si la transaction a réussi, sinon false.
+     */
     @Override
     public boolean subBankFunds(double amount) {
 

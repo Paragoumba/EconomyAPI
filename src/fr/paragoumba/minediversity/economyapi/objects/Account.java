@@ -20,22 +20,22 @@ public interface Account {
 
     /**
      * Permet de définir l'argent présent sur le compte bancaire du joueur.
-     * @param funds L'argent à mettre sur le compte bancaire du joueur.
+     * @param amount L'argent à mettre sur le compte bancaire du joueur.
      * @return true si la transaction a réussi, sinon false.
      */
-    boolean setBankFunds(double funds);
+    boolean setBankFunds(double amount);
 
     /**
      * Permet d'ajouter de l'argent sur le compte bancaire du joueur.
-     * @param funds L'argent à ajouter au compte bancaire du joueur.
+     * @param amount L'argent à ajouter au compte bancaire du joueur.
      * @return true si la transaction a réussi, sinon false.
      */
-    boolean addBankFunds(double funds);
+    boolean addBankFunds(double amount);
 
     /**
      * Permet de retirer de l'argent du compte bancaire du joueur.
-     * @param funds L'argent à retirer du compte bancaire du joueur.
+     * @param amount L'argent à retirer du compte bancaire du joueur.
      * @return true si la transaction a réussi, sinon false.
      */
-    boolean subBankFunds(double funds);
+    boolean subBankFunds(double amount);
 }
