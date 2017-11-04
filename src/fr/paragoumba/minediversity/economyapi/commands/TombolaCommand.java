@@ -2,6 +2,7 @@ package fr.paragoumba.minediversity.economyapi.commands;
 
 import fr.paragoumba.minediversity.economyapi.Database;
 import fr.paragoumba.minediversity.economyapi.EconomyAPI;
+import fr.paragoumba.minediversity.economyapi.objects.Tombola;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -39,12 +40,13 @@ public class TombolaCommand implements CommandExecutor {
 
                                 Database.subPlayerBankFunds(player, tombolaPrice);
                                 Database.addTombolaParticipant(player);
+
                                 player.sendMessage("Vous participez maintenant à tombola.");
                                 player.sendMessage(mainColor + "" + tombolaPrice + moneySymbol + ChatColor.RESET + " vous ont été retirés.");
 
                             } else {
 
-                                player.sendMessage("Vous n'avez pas assez d'argent sur votre compte bancaire pour participer. Il vous faut " + mainColor + "" + tombolaPrice + ChatColor.RESET + "£");
+                                player.sendMessage("Vous n'avez pas assez d'argent sur votre compte bancaire pour participer. Il vous faut " + mainColor + tombolaPrice + moneySymbol + ChatColor.RESET + ".");
 
                             }
 
@@ -58,12 +60,12 @@ public class TombolaCommand implements CommandExecutor {
                 }
             }
 
-            player.sendMessage("-§6[§f|§6]§f-----------------§6Tombola's Infos§f-----------------§6[§f|§6]§f-\n" +
-                    "/tombola play : Vous incrit à la tombola.\n" +
+            player.sendMessage("-§6[§f|§6]§f------------------§6Infos Tombola§f------------------§6[§f|§6]§f-\n" +
+                    "/tombola play : Vous inscrit à la tombola.\n" +
                     "L'inscription à la tombola coûte " + tombolaPrice + moneySymbol + ".\n" +
                     "Une tombola est organisée tous les jours et le tirage au sort se fait à " + mainColor + "22h" + ChatColor.RESET + ".");
 
-            player.sendMessage("-§6[§f|§6]§f-----------------§6Tombola's Infos§f-----------------§6[§f|§6]§f-");
+            player.sendMessage("-§6[§f|§6]§f------------------§6Infos Tombola§f------------------§6[§f|§6]§f-");
             return true;
 
         } else if (commandSender instanceof ConsoleCommandSender){
@@ -71,19 +73,21 @@ public class TombolaCommand implements CommandExecutor {
             if (strings.length > 0 && strings[0].equalsIgnoreCase("launch")){
 
                 List<Player> participants = Database.getTombolaParticipants();
-                Player winner = participants.get((int) Math.round(Math.random() * participants.size()));
+                Player winner = participants.get((int) Math.round(Math.random() * (participants.size() - 1)));
 
                 Database.setTombolaWinner(winner);
 
                 if (winner.isOnline()){
 
-                    double tombolaFunds = Database.getTombolaFunds();
+                    Tombola tombola = new Tombola(Database.getLastTombolaWinId());
 
-                    Database.addPlayerBankFunds(winner, tombolaFunds * 0.8);
-                    Database.addEntBankFunds("tombola", tombolaFunds * 0.2);
+                    Database.addPlayerBankFunds(winner, tombola.getFunds() * 0.8);
+                    Database.addEntBankFunds("tombola", tombola.getFunds() * 0.2);
+                    Database.setTombolaWon();
 
                 }
 
+                Database.startTombola();
                 return true;
             }
         }

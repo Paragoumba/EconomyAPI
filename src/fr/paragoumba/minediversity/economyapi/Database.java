@@ -426,11 +426,30 @@ public class Database {
         return new LinkedList<>();
     }
 
-    public static double getTombolaFunds(){
+    public static boolean startTombola(){
+
+        try(Connection connection = DriverManager.getConnection(url, login, password);
+            Statement state = connection.createStatement()){
+
+            state.executeUpdate("INSERT INTO " + database + ".`" + tombolaWinTable + "` VALUES (" + getLastTombolaWinId() + 1 + ", NULL, 0, FALSE)");
+            return true;
+
+        } catch (Exception e) {
+
+            Bukkit.getLogger().log(Level.SEVERE, entBankTable + "'s funds' error.");
+            e.printStackTrace();
+
+        }
+
+        return false;
+
+    }
+
+    public static double getTombolaFunds(int id){
 
         try(Connection connection = DriverManager.getConnection(url, login, password);
             Statement state = connection.createStatement();
-            ResultSet result = state.executeQuery("SELECT funds FROM " + database + ".`" + tombolaWinTable + "` WHERE id = " + getLastTombolaWinId())){
+            ResultSet result = state.executeQuery("SELECT funds FROM " + database + ".`" + tombolaWinTable + "` WHERE id = " + id)){
 
             result.next();
             return result.getDouble("funds");
@@ -445,12 +464,12 @@ public class Database {
         return 0.0;
     }
 
-    public static boolean setTombolaFunds(double amount){
+    public static boolean setTombolaFunds(int id, double amount){
 
         try(Connection connection = DriverManager.getConnection(url, login, password);
             Statement state = connection.createStatement()){
 
-            state.executeUpdate("UPDATE " + database + ".`" + tombolaWinTable + "` SET funds = " + amount + " WHERE id = " + getLastTombolaWinId());
+            state.executeUpdate("UPDATE " + database + ".`" + tombolaWinTable + "` SET funds = " + amount + " WHERE id = " + id);
 
             return true;
 
@@ -463,12 +482,12 @@ public class Database {
         return false;
     }
 
-    public static boolean addTombolaFunds(double amount){
+    public static boolean addTombolaFunds(int id, double amount){
 
         try(Connection connection = DriverManager.getConnection(url, login, password);
             Statement state = connection.createStatement()){
 
-            state.executeUpdate("UPDATE " + database + ".`" + tombolaWinTable + "` SET funds = funds + " + amount + " WHERE id = " + getLastTombolaWinId());
+            state.executeUpdate("UPDATE " + database + ".`" + tombolaWinTable + "` SET funds = funds + " + amount + " WHERE id = " + id);
 
             return true;
 
@@ -481,12 +500,12 @@ public class Database {
         return false;
     }
 
-    public static boolean subTombolaFunds(double amount){
+    public static boolean subTombolaFunds(int id, double amount){
 
         try(Connection connection = DriverManager.getConnection(url, login, password);
             Statement state = connection.createStatement()){
 
-            state.executeUpdate("UPDATE " + database + ".`" + tombolaWinTable + "` SET funds = funds - " + amount + " WHERE id = " + getLastTombolaWinId());
+            state.executeUpdate("UPDATE " + database + ".`" + tombolaWinTable + "` SET funds = funds - " + amount + " WHERE id = " + id);
 
             return true;
 
@@ -499,12 +518,13 @@ public class Database {
         return false;
     }
 
-    public static void addTombolaParticipant(Player player){
+    public static boolean addTombolaParticipant(Player player){
 
         try(Connection connection = DriverManager.getConnection(url, login, password);
             Statement state = connection.createStatement()){
 
-            state.executeUpdate("INSERT INTO " + database + ".`" + tombolaTable + "` VALUES ('" + player.getUniqueId() + "'" + ")");
+            state.executeUpdate("INSERT INTO " + database + ".`" + tombolaTable + "` VALUES ('" + player.getUniqueId() + "')");
+            return true;
 
         } catch (Exception e) {
 
@@ -512,6 +532,27 @@ public class Database {
             e.printStackTrace();
 
         }
+
+        return false;
+    }
+
+    public static int getTombolaId(Player player){
+
+        try(Connection connection = DriverManager.getConnection(url, login, password);
+            Statement state = connection.createStatement();
+            ResultSet result = state.executeQuery("SELECT id FROM " + database + ".`" + tombolaTable + "` WHERE winner = " + player.getUniqueId())){
+
+            result.next();
+            return result.getInt(0);
+
+        } catch (Exception e) {
+
+            Bukkit.getLogger().log(Level.SEVERE, "Error in getting tombola's participants.");
+            e.printStackTrace();
+
+        }
+
+        return -1;
     }
 
     public static List<Player> getTombolaParticipants(){
@@ -577,15 +618,60 @@ public class Database {
 
     }
 
-    public static Player getTombolaWinner(){
+    public static boolean setTombolaWon(){
+
+        try(Connection connection = DriverManager.getConnection(url, login, password);
+            Statement state = connection.createStatement()){
+
+            state.executeUpdate("UPDATE " + database + ".`" + tombolaWinTable + "` SET winned = " + true + " WHERE id = " + getLastTombolaWinId());
+
+            return true;
+
+        } catch (Exception e) {
+
+            e.printStackTrace();
+
+        }
+
+        return false;
+
+    }
+
+    public static ArrayList<String> getTombolaWinners(){
 
         try(Connection connection = DriverManager.getConnection(url, login, password);
             Statement state = connection.createStatement();
-            ResultSet result = state.executeQuery("SELECT player FROM " + database + ".`" + tombolaTable + "` WHERE id = " + getLastTombolaWinId())){
+            ResultSet result = state.executeQuery("SELECT winner FROM " + database + ".`" + tombolaWinTable + "` WHERE winned = " + false)){
+
+            ArrayList<String> winners = new ArrayList<>();
+
+            while (result.next()){
+
+                winners.add(result.getString(0));
+
+            }
+
+            return winners;
+
+        } catch (Exception e) {
+
+            Bukkit.getLogger().log(Level.SEVERE, "Error in getting tombola's participant.");
+            e.printStackTrace();
+
+        }
+
+        return new ArrayList<>();
+    }
+
+    public static Player getTombolaWinner(int id){
+
+        try(Connection connection = DriverManager.getConnection(url, login, password);
+            Statement state = connection.createStatement();
+            ResultSet result = state.executeQuery("SELECT winner FROM " + database + ".`" + tombolaWinTable + "` WHERE id = " + id)){
 
             result.next();
 
-            return Bukkit.getPlayer(result.getString("player"));
+            return Bukkit.getPlayer(result.getString(0));
 
         } catch (Exception e) {
 
@@ -597,7 +683,28 @@ public class Database {
         return null;
     }
 
-    private static int getLastTombolaWinId(){
+    public static boolean isTombolaWon(int id){
+
+        try(Connection connection = DriverManager.getConnection(url, login, password);
+            Statement state = connection.createStatement();
+            ResultSet result = state.executeQuery("SELECT won FROM " + database + ".`" + tombolaWinTable + "` WHERE id = " + id)){
+
+            result.next();
+
+            return result.getBoolean(0);
+
+        } catch (Exception e) {
+
+            Bukkit.getLogger().log(Level.SEVERE, "Error in getting tombola's state.");
+            e.printStackTrace();
+
+        }
+
+        return false;
+
+    }
+
+    public static int getLastTombolaWinId(){
 
         try(Connection connection = DriverManager.getConnection(url, login, password);
             Statement state = connection.createStatement();

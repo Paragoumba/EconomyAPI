@@ -1,9 +1,15 @@
 name: EconomyAPI
-version: 0.12b12
+version: 1.3b18
 author: Paragoumba
 authors: [MrCapi]
 main: fr.paragoumba.minediversity.economyapi.EconomyAPI
 commands:
   tombola:
+    description: Command to interact with the tombola.
+    usage: /tombola [play]
   money:
+    description: Reloads the plugin's config.
+    usage: /money <add | sub | set | ranking | give> [amount]
   apireload:
+    description: Reloads the plugin's config.
+    usage: /apireload

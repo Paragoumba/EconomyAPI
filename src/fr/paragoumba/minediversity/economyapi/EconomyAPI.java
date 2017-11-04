@@ -19,7 +19,7 @@ import java.util.HashMap;
 
 public class EconomyAPI extends JavaPlugin implements Listener {
 
-    static EconomyAPI plugin;
+    public static EconomyAPI plugin;
     public static ChatColor mainColor;
     public static ChatColor errorColor;
     public static String moneySymbol;
@@ -53,10 +53,11 @@ public class EconomyAPI extends JavaPlugin implements Listener {
         getCommand("money").setExecutor(new MoneyCommand());
         getCommand("apireload").setExecutor(new APIReloadCommand());
 
-        commandsArgs.put("add", "/money add <player> <amount>");
-        commandsArgs.put("sub", "/money sub <player> <amount>");
-        commandsArgs.put("set", "/money set <player> <amount>");
-        commandsArgs.put("give", "/money give <player> <amount>");
+        commandsArgs.put("add", "/money add <joueur> <montant>");
+        commandsArgs.put("sub", "/money sub <joueur> <montant>");
+        commandsArgs.put("set", "/money set <joueur> <montant>");
+        commandsArgs.put("give", "/money give <joueur> <montant>");
+        commandsArgs.put("see", "/money see <joueur>");
 
         tombolaInfoMessageTask();
 
@@ -85,9 +86,7 @@ public class EconomyAPI extends JavaPlugin implements Listener {
 
         Bukkit.getScheduler().scheduleSyncRepeatingTask(this, () -> {
 
-            Collection<? extends Player> onlinePlayers = Bukkit.getOnlinePlayers();
-
-            for (Player player : onlinePlayers) {
+            for (Player player : Bukkit.getOnlinePlayers()) {
 
                 if (!Database.getTombolaParticipant(player)) {
 
