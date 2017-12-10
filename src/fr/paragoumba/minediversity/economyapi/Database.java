@@ -623,7 +623,7 @@ public class Database {
         try(Connection connection = DriverManager.getConnection(url, login, password);
             Statement state = connection.createStatement()){
 
-            state.executeUpdate("UPDATE " + database + ".`" + tombolaWinTable + "` SET winned = " + true + " WHERE id = " + getLastTombolaWinId());
+            state.executeUpdate("UPDATE " + database + ".`" + tombolaWinTable + "` SET won = " + true + " WHERE id = " + getLastTombolaWinId());
 
             return true;
 
@@ -641,13 +641,13 @@ public class Database {
 
         try(Connection connection = DriverManager.getConnection(url, login, password);
             Statement state = connection.createStatement();
-            ResultSet result = state.executeQuery("SELECT winner FROM " + database + ".`" + tombolaWinTable + "` WHERE winned = " + false)){
+            ResultSet result = state.executeQuery("SELECT winner FROM " + database + ".`" + tombolaWinTable + "` WHERE won = " + false)){
 
             ArrayList<String> winners = new ArrayList<>();
 
             while (result.next()){
 
-                winners.add(result.getString(0));
+                winners.add(result.getString(1));
 
             }
 

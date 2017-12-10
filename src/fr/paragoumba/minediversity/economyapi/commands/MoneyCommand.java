@@ -178,8 +178,8 @@ public class MoneyCommand implements CommandExecutor {
 
                         List<AbstractMap.SimpleEntry<String, Double>> accounts = Database.getAllBankFunds();
 
-                        accounts.sort(Comparator.comparing(AbstractMap.SimpleEntry::getValue));
-                        player.sendMessage("     --   Ranking   --");
+                        accounts.sort((o1, o2) -> (int) (0 - (o1.getValue() - o2.getValue())));
+                        player.sendMessage("     --   Rang   --");
 
                         int i = 1;
 
@@ -207,11 +207,9 @@ public class MoneyCommand implements CommandExecutor {
                                 default:
 
                                     rank = i + "ème";
-
                             }
 
                             player.sendMessage(rank + ChatColor.RESET + " : " + entry.getKey() + " - " + entry.getValue() + moneySymbol);
-
                             i++;
 
                         }
