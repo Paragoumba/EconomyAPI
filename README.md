@@ -1,2 +1,2 @@
 # EconomyAPI
-An API to manage the Minecraft server MineDiversity's economy
+A Spigot plugin and API to manage the Minecraft server MineDiversity's economy
