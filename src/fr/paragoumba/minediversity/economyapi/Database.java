@@ -22,14 +22,7 @@ public class Database {
 
     private Database(){}
 
-    private static String database;
-    private static String url;
-    private static String login;
-    private static String password;
-    private static String playersBankTable;
-    private static String entBankTable;
-    private static String tombolaTable;
-    private static String tombolaWinTable;
+    private static String database, url, login, password, playersBankTable, entBankTable, tombolaTable, tombolaWinTable;
 
     /**
      * Crée un compte dans la base de données pour le joueur spécifié.
@@ -868,10 +861,7 @@ public class Database {
 
     private static String patch(String str){
 
-        str = str.replaceAll("'", "''");
-        str = str.replaceAll("\"", "\"\"");
-
-        return str;
+        return str.replaceAll("'", "''").replaceAll("\"", "\"\"");
 
     }
 }

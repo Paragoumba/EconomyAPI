@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="minecraft_135706@minecraft1056.omgserv.com" uuid="6a16c2be-6f53-43ff-9cee-119efcee1522">
-      <driver-ref>mysql</driver-ref>
+    <data-source source="LOCAL" name="economyapi@149.91.81.205" uuid="b86fb971-56ca-497b-94b0-8461a39ad0cb">
+      <driver-ref>mariadb</driver-ref>
       <synchronize>true</synchronize>
-      <jdbc-driver>com.mysql.jdbc.Driver</jdbc-driver>
-      <jdbc-url>jdbc:mysql://minecraft1056.omgserv.com:3306/minecraft_135706</jdbc-url>
+      <jdbc-driver>org.mariadb.jdbc.Driver</jdbc-driver>
+      <jdbc-url>jdbc:mariadb://149.91.81.205:3306/economyapi</jdbc-url>
       <driver-properties>
         <property name="autoReconnect" value="true" />
         <property name="zeroDateTimeBehavior" value="convertToNull" />
