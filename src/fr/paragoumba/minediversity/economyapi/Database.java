@@ -33,7 +33,7 @@ public class Database {
         try(Connection connection = DriverManager.getConnection(url, login, password);
             Statement state = connection.createStatement()){
 
-            state.executeUpdate("INSERT INTO " + database + ".`" + playersBankTable +"` VALUES ('" + player.getUniqueId() + "', '" + player.getName() + "', 0.0, 0.0);");
+            state.executeUpdate("INSERT INTO " + database + ".`" + playersBankTable +"` VALUES ('" + player.getUniqueId() + "', '" + player.getName() + "', 0.0);");
 
         } catch (Exception e) {
 
@@ -98,114 +98,18 @@ public class Database {
     }
 
     /**
-     * Permet de récupèrer l'argent présent dans le porte-monnaie du joueur.
-     * @param player Le joueur dont on veut connaître l'argent présent dans le porte-monnaie.
-     * @return L'argent présent dans le porte-monnaie du joueur.
-     */
-    public static double getWalletFunds(Player player){
-
-        try(Connection connection = DriverManager.getConnection(url, login, password);
-            Statement state = connection.createStatement();
-            ResultSet result = state.executeQuery("SELECT walletFunds FROM " + database + ".`" + playersBankTable + "` WHERE player = '" + player.getUniqueId() + "'")){
-
-            result.next();
-            return result.getDouble("walletFunds");
-
-        } catch (Exception e) {
-
-            Bukkit.getLogger().log(Level.SEVERE, "Wallet's funds' error.");
-            e.printStackTrace();
-
-        }
-
-        return 0.0;
-    }
-    
-    /**
-     * Permet de définir l'argent présent dans le porte-monnaie du joueur.
-     * @param player Le possesseur du compte.
-     * @param amount L'argent à mettre dans le porte-monnaie du joueur.
-     * @return true si la transaction a réussi, sinon false.
-     */
-    public static boolean setWalletFunds(Player player, double amount){
-
-        try(Connection connection = DriverManager.getConnection(url, login, password);
-            Statement state = connection.createStatement()){
-
-            state.executeUpdate("UPDATE " + database + ".`" + playersBankTable + "` SET walletFunds = " + amount + " WHERE player = '" + player.getUniqueId() + "'");
-
-            return true;
-
-        } catch (Exception e) {
-
-            e.printStackTrace();
-
-        }
-
-        return false;
-    }
-
-    /**
-     * Permet d'ajouter de l'argent dans le porte-monnaie du joueur.
-     * @param player Le possesseur du compte.
-     * @param amount L'argent à ajouter au porte-monnaie du joueur.
-     * @return true si la transaction a réussi, sinon false.
-     */
-    public static boolean addWalletFunds(Player player, double amount){
-
-        try(Connection connection = DriverManager.getConnection(url, login, password);
-            Statement state = connection.createStatement()){
-
-            state.executeUpdate("UPDATE " + database + ".`" + playersBankTable + "` SET walletFunds = walletFunds + " + amount + " WHERE player = '" + player.getUniqueId() + "'");
-
-            return true;
-
-        } catch (Exception e) {
-
-            e.printStackTrace();
-
-        }
-
-        return false;
-    }
-
-    /**
-     * Permet de retirer de l'argent dans le porte-monnaie du joueur.
-     * @param player Le possesseur du compte.
-     * @param amount L'argent à retirer du porte-monnaie du joueur.
-     * @return true si la transaction a réussi, sinon false.
-     */
-    public static boolean subWalletFunds(Player player, double amount){
-
-        try(Connection connection = DriverManager.getConnection(url, login, password);
-            Statement state = connection.createStatement()){
-
-            state.executeUpdate("UPDATE " + database + ".`" + playersBankTable + "` SET walletFunds = walletFunds - " + amount + " WHERE player = '" + player.getUniqueId() + "'");
-
-            return true;
-
-        } catch (Exception e) {
-
-            e.printStackTrace();
-
-        }
-
-        return false;
-    }
-
-    /**
      * Permet de récupèrer l'argent présent sur le compte bancaire du joueur.
      * @param player Le joueur dont on veut récupèrer le solde du compte bancaire.
      * @return L'argent présent sur le compte bancaire du joueur.
      */
-    public static double getPlayerBankFunds(Player player){
+    public static double getPlayerFunds(Player player){
 
         try(Connection connection = DriverManager.getConnection(url, login, password);
             Statement state = connection.createStatement();
-            ResultSet result = state.executeQuery("SELECT bankFunds FROM " + database + ".`" + playersBankTable + "` WHERE player = '" + player.getUniqueId() + "'")){
+            ResultSet result = state.executeQuery("SELECT funds FROM " + database + ".`" + playersBankTable + "` WHERE player = '" + player.getUniqueId() + "'")){
 
             result.next();
-            return result.getDouble("bankFunds");
+            return result.getDouble("funds");
 
         } catch (Exception e) {
 
@@ -222,16 +126,16 @@ public class Database {
      * @param name Le nom de l'entreprise dont on veut récupèrer le solde du compte bancaire.
      * @return L'argent présent sur le compte bancaire de l'entreprise.
      */
-    public static double getEntBankFunds(String name){
+    public static double getEntFunds(String name){
 
         name = patch(name);
 
         try(Connection connection = DriverManager.getConnection(url, login, password);
             Statement state = connection.createStatement();
-            ResultSet result = state.executeQuery("SELECT bankFunds FROM " + database + ".`" + entBankTable + "` WHERE name = " + name)){
+            ResultSet result = state.executeQuery("SELECT funds FROM " + database + ".`" + entBankTable + "` WHERE name = " + name)){
 
             result.next();
-            return result.getDouble("bankFunds");
+            return result.getDouble("funds");
 
         } catch (Exception e) {
 
@@ -249,12 +153,12 @@ public class Database {
      * @param amount L'argent à mettre sur le compte bancaire du joueur.
      * @return true si la transaction a réussi, sinon false.
      */
-    public static boolean setPlayerBankFunds(Player player, double amount){
+    public static boolean setPlayerFunds(Player player, double amount){
 
         try(Connection connection = DriverManager.getConnection(url, login, password);
             Statement state = connection.createStatement()){
 
-            state.executeUpdate("UPDATE " + database + ".`" + playersBankTable + "` SET bankFunds = " + amount + " WHERE player = '" + player.getUniqueId() + "'");
+            state.executeUpdate("UPDATE " + database + ".`" + playersBankTable + "` SET funds = " + amount + " WHERE player = '" + player.getUniqueId() + "'");
 
             return true;
 
@@ -273,14 +177,14 @@ public class Database {
      * @param amount L'argent à mettre sur le compte bancaire de l'entreprise.
      * @return true si la transaction a réussi, sinon false.
      */
-    public static boolean setEntBankFunds(String name, double amount){
+    public static boolean setEntFunds(String name, double amount){
 
         name = patch(name);
 
         try(Connection connection = DriverManager.getConnection(url, login, password);
             Statement state = connection.createStatement()){
 
-            state.executeUpdate("UPDATE " + database + ".`" + entBankTable + "` SET bankFunds = " + amount + " WHERE name = " + name);
+            state.executeUpdate("UPDATE " + database + ".`" + entBankTable + "` SET funds = " + amount + " WHERE name = " + name);
 
             return true;
 
@@ -299,12 +203,12 @@ public class Database {
      * @param amount L'argent à ajouter au compte bancaire du joueur.
      * @return true si la transaction a réussi, sinon false.
      */
-    public static boolean addPlayerBankFunds(Player player, double amount){
+    public static boolean addPlayerFunds(Player player, double amount){
 
         try(Connection connection = DriverManager.getConnection(url, login, password);
             Statement state = connection.createStatement()){
 
-            state.executeUpdate("UPDATE " + database + ".`" + playersBankTable + "` SET bankFunds = bankFunds + " + amount + " WHERE player = '" + player.getUniqueId() + "'");
+            state.executeUpdate("UPDATE " + database + ".`" + playersBankTable + "` SET funds = funds + " + amount + " WHERE player = '" + player.getUniqueId() + "'");
 
             return true;
 
@@ -323,14 +227,14 @@ public class Database {
      * @param amount L'argent à ajouter au compte bancaire de l'entreprise.
      * @return true si la transaction a réussi, sinon false.
      */
-    public static boolean addEntBankFunds(String name, double amount){
+    public static boolean addEntFunds(String name, double amount){
 
         name = patch(name);
 
         try(Connection connection = DriverManager.getConnection(url, login, password);
             Statement state = connection.createStatement()){
 
-            state.executeUpdate("UPDATE " + database + ".`" + entBankTable + "` SET bankFunds = bankFunds + " + amount + " WHERE name = " + name);
+            state.executeUpdate("UPDATE " + database + ".`" + entBankTable + "` SET funds = funds + " + amount + " WHERE name = " + name);
 
             return true;
 
@@ -349,12 +253,12 @@ public class Database {
      * @param amount L'argent à retirer du compte bancaire du joueur.
      * @return true si la transaction a réussi, sinon false.
      */
-    public static boolean subPlayerBankFunds(Player player, double amount){
+    public static boolean subPlayerFunds(Player player, double amount){
 
         try(Connection connection = DriverManager.getConnection(url, login, password);
             Statement state = connection.createStatement()){
 
-            state.executeUpdate("UPDATE " + database + ".`" + playersBankTable + "` SET bankFunds = bankFunds - " + amount + " WHERE player = '" + player.getUniqueId() + "'");
+            state.executeUpdate("UPDATE " + database + ".`" + playersBankTable + "` SET funds = funds - " + amount + " WHERE player = '" + player.getUniqueId() + "'");
 
             return true;
 
@@ -373,14 +277,14 @@ public class Database {
      * @param amount L'argent à retirer du compte bancaire de l'entreprise.
      * @return true si la transaction a réussi, sinon false.
      */
-    public static boolean subEntBankFunds(String name, double amount){
+    public static boolean subEntFunds(String name, double amount){
 
         name = patch(name);
 
         try(Connection connection = DriverManager.getConnection(url, login, password);
             Statement state = connection.createStatement()){
 
-            state.executeUpdate("UPDATE " + database + ".`" + entBankTable + "` SET bankFunds = bankFunds - " + amount + " WHERE name = " + name);
+            state.executeUpdate("UPDATE " + database + ".`" + entBankTable + "` SET funds = funds - " + amount + " WHERE name = " + name);
 
             return true;
 
@@ -397,13 +301,13 @@ public class Database {
 
         try(Connection connection = DriverManager.getConnection(url, login, password);
             Statement state = connection.createStatement();
-            ResultSet result = state.executeQuery("SELECT lastPseudo, bankFunds FROM " + database + ".`" + playersBankTable + "`")){
+            ResultSet result = state.executeQuery("SELECT lastPseudo, funds FROM " + database + ".`" + playersBankTable + "`")){
 
             LinkedList<AbstractMap.SimpleEntry<String, Double>> funds = new LinkedList<>();
 
             while (result.next()){
 
-                funds.add(new AbstractMap.SimpleEntry<>(result.getString("lastPseudo"), result.getDouble("bankFunds")));
+                funds.add(new AbstractMap.SimpleEntry<>(result.getString("lastPseudo"), result.getDouble("funds")));
 
             }
 
@@ -734,7 +638,7 @@ public class Database {
 
             try(Statement state = connection.createStatement()){
 
-                state.executeQuery("SELECT min(walletFunds) FROM " + database + ".`" + playersBankTable + "`");
+                state.executeQuery("SELECT min(funds) FROM " + database + ".`" + playersBankTable + "`");
 
             } catch (MySQLSyntaxErrorException e){
 
@@ -743,8 +647,7 @@ public class Database {
                 state.executeUpdate("CREATE TABLE " + database + ".`" + playersBankTable + "` (" +
                         "player TINYTEXT," +
                         "lastPseudo TINYTEXT," +
-                        "walletFunds DOUBLE," +
-                        "bankFunds DOUBLE" +
+                        "funds DOUBLE" +
                         ") ENGINE = INNODB");
 
                 state.close();
@@ -764,7 +667,7 @@ public class Database {
 
             try(Statement state = connection.createStatement()){
 
-                state.executeQuery("SELECT min(bankFunds) FROM " + database + ".`" + entBankTable + "`");
+                state.executeQuery("SELECT min(funds) FROM " + database + ".`" + entBankTable + "`");
 
             } catch (MySQLSyntaxErrorException e){
 
@@ -772,7 +675,7 @@ public class Database {
 
                 state.executeUpdate("CREATE TABLE " + database + ".`" + entBankTable + "` (" +
                         "name TINYTEXT," +
-                        "bankFunds DOUBLE" +
+                        "funds DOUBLE" +
                         ") ENGINE = INNODB");
 
                 state.close();

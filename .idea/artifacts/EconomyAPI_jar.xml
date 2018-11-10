@@ -1,6 +1,6 @@
 <component name="ArtifactManager">
   <artifact type="jar" build-on-make="true" name="EconomyAPI:jar">
-    <output-path>D:/Desktop/Dev</output-path>
+    <output-path>$USER_HOME$/MC/plugins</output-path>
     <root id="archive" name="EconomyAPI.jar">
       <element id="module-output" name="EconomyAPI" />
       <element id="extracted-dir" path="$PROJECT_DIR$/../../../../../API/Data/mysql-connector-java-5.1.42-bin.jar" path-in-jar="/" />

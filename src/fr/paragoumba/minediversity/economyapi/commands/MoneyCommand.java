@@ -1,9 +1,6 @@
 package fr.paragoumba.minediversity.economyapi.commands;
 
 import fr.paragoumba.minediversity.economyapi.Database;
-import fr.paragoumba.minediversity.economyapi.objects.Account;
-import fr.paragoumba.minediversity.economyapi.objects.PlayerAccount;
-import javafx.application.Platform;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -13,7 +10,7 @@ import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.AbstractMap;
-import java.util.Comparator;
+import java.util.Collection;
 import java.util.List;
 
 import static fr.paragoumba.minediversity.economyapi.EconomyAPI.*;
@@ -46,7 +43,7 @@ public class MoneyCommand implements CommandExecutor {
 
                                         receiver.sendMessage("La modération a ajouté " + mainColor + String.format("%.1f", amount) + moneySymbol + ChatColor.RESET + " sur votre compte.");
                                         player.sendMessage("Vous venez d'ajouter " + mainColor + String.format("%.1f", amount) + moneySymbol + ChatColor.RESET + " au compte de " + mainColor + receiver.getName() + ChatColor.RESET + ".");
-                                        Database.addPlayerBankFunds(receiver, amount);
+                                        Database.addPlayerFunds(receiver, amount);
 
                                     } else {
 
@@ -87,7 +84,7 @@ public class MoneyCommand implements CommandExecutor {
 
                                         receiver.sendMessage("La modération a fixé le solde de votre compte à " + mainColor + String.format("%.1f", amount) + moneySymbol + ChatColor.RESET + ".");
                                         player.sendMessage("Vous venez de définir le solde du compte de " + mainColor + receiver.getName() + ChatColor.RESET + " à " + mainColor + String.format("%.1f", amount) + moneySymbol + ChatColor.RESET + ".");
-                                        Database.setPlayerBankFunds(player, amount);
+                                        Database.setPlayerFunds(player, amount);
 
                                     } else {
 
@@ -127,7 +124,7 @@ public class MoneyCommand implements CommandExecutor {
 
                                         receiver.sendMessage("La modération a retiré " + mainColor + String.format("%.1f", amount) + moneySymbol + ChatColor.RESET  + " de votre compte bancaire.");
                                         player.sendMessage("Vous venez de retirer " + mainColor + String.format("%.1f", amount) + moneySymbol + ChatColor.RESET + " du compte de " + mainColor + receiver.getName() + ChatColor.RESET + ".");
-                                        Database.subPlayerBankFunds(receiver, amount);
+                                        Database.subPlayerFunds(receiver, amount);
 
                                     } else {
 
@@ -160,7 +157,7 @@ public class MoneyCommand implements CommandExecutor {
 
                                 if (owner != null) {
 
-                                    player.sendMessage(owner.getDisplayName() + ChatColor.RESET + " a " + mainColor + String.format("%.1f", Database.getWalletFunds(owner)) + moneySymbol + ChatColor.RESET + " dans son porte-monnaie et " + mainColor + String.format("%.1f", Database.getPlayerBankFunds(owner)) + moneySymbol + ChatColor.RESET + " sur son compte bancaire.");
+                                    player.sendMessage(owner.getDisplayName() + ChatColor.RESET + " a " + mainColor + String.format("%.1f", Database.getPlayerFunds(owner)) + moneySymbol + ChatColor.RESET + " sur son compte bancaire.");
 
                                 }
 
@@ -174,11 +171,43 @@ public class MoneyCommand implements CommandExecutor {
                         accessError(player);
                         return true;
 
+                    case "giveall":
+
+                        if (player.hasPermission("economy.modo")){
+
+                            double amount;
+                            Collection<? extends Player> onlinePlayers = Bukkit.getOnlinePlayers();
+
+                            try {
+
+                                amount = Double.parseDouble(strings[0]);
+
+                            } catch (NumberFormatException e){
+
+                                amountError(player);
+                                return true;
+
+                            }
+
+                            for (Player onlinePlayer : onlinePlayers){
+
+                                Database.addPlayerFunds(onlinePlayer, amount);
+                                onlinePlayer.sendMessage("Votre compte a été crédité de " + mainColor + amount + " "  + moneySymbol + ChatColor.RESET + ". Votre solde est maintenant de " + mainColor + Database.getPlayerFunds(onlinePlayer) + " " + moneySymbol + ChatColor.RESET + ".");
+
+                            }
+
+                            return true;
+
+                        }
+
+                        accessError(player);
+                        return true;
+
                     case "rang":
 
                         List<AbstractMap.SimpleEntry<String, Double>> accounts = Database.getAllBankFunds();
 
-                        accounts.sort((o1, o2) -> (int) (0 - (o1.getValue() - o2.getValue())));
+                        accounts.sort((o1, o2) -> (int) (o1.getValue() + o2.getValue()));
                         player.sendMessage("     --   Rang   --");
 
                         int i = 1;
@@ -227,13 +256,13 @@ public class MoneyCommand implements CommandExecutor {
 
                                 if (receiver != null) {
 
-                                    if (Database.getPlayerBankFunds(player) >= amount) {
+                                    if (Database.getPlayerFunds(player) >= amount) {
 
-                                        if (!receiver.getName().equals(player.getName())) {
+                                        if (!receiver.getUniqueId().equals(player.getUniqueId())) {
 
-                                            Database.addPlayerBankFunds(receiver, amount);
+                                            Database.addPlayerFunds(receiver, amount);
                                             receiver.sendMessage("Vous avez reçu " + mainColor + String.format("%.1f", amount) + moneySymbol + ChatColor.RESET + " de la part de " + mainColor + player.getName() + ChatColor.RESET + ".");
-                                            Database.subPlayerBankFunds(player, amount);
+                                            Database.subPlayerFunds(player, amount);
                                             player.sendMessage("Vous avez donné " + mainColor + String.format("%.1f", amount) + moneySymbol + ChatColor.RESET + " à " + mainColor + receiver.getName() + ChatColor.RESET + ".");
 
                                         } else {
@@ -285,9 +314,7 @@ public class MoneyCommand implements CommandExecutor {
                 }
             }
 
-            player.sendMessage("Votre argent :");
-            player.sendMessage("Solde liquide : " + mainColor + String.format("%.1f", Database.getWalletFunds(player)) + moneySymbol);
-            player.sendMessage("Solde banque : " + mainColor + String.format("%.1f", Database.getPlayerBankFunds(player)) + moneySymbol);
+            player.sendMessage("Solde banque : " + mainColor + String.format("%.1f", Database.getPlayerFunds(player)) + moneySymbol);
             return true;
 
         } else if (commandSender instanceof ConsoleCommandSender){
@@ -296,10 +323,10 @@ public class MoneyCommand implements CommandExecutor {
 
                 for (Player player : Bukkit.getOnlinePlayers()){
 
-                    double amount = Database.getPlayerBankFunds(player) * 0.02;
+                    double amount = Database.getPlayerFunds(player) * 0.02;
 
-                    Database.subPlayerBankFunds(player, amount);
-                    Database.addEntBankFunds("MineDiversity", amount);
+                    Database.subPlayerFunds(player, amount);
+                    Database.addEntFunds("MineDiversity", amount);
 
                 }
 

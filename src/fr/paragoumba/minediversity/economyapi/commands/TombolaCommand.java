@@ -36,9 +36,9 @@ public class TombolaCommand implements CommandExecutor {
 
                         if (!Database.getTombolaParticipant(player)) {
 
-                            if (Database.getPlayerBankFunds(player) >= tombolaPrice) {
+                            if (Database.getPlayerFunds(player) >= tombolaPrice) {
 
-                                Database.subPlayerBankFunds(player, tombolaPrice);
+                                Database.subPlayerFunds(player, tombolaPrice);
                                 Database.addTombolaParticipant(player);
 
                                 player.sendMessage("Vous participez maintenant à tombola.");
@@ -81,8 +81,8 @@ public class TombolaCommand implements CommandExecutor {
 
                     Tombola tombola = new Tombola(Database.getLastTombolaWinId());
 
-                    Database.addPlayerBankFunds(winner, tombola.getFunds() * 0.8);
-                    Database.addEntBankFunds("tombola", tombola.getFunds() * 0.2);
+                    Database.addPlayerFunds(winner, tombola.getFunds() * 0.8);
+                    Database.addEntFunds("tombola", tombola.getFunds() * 0.2);
                     Database.setTombolaWon();
 
                 }

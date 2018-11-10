@@ -33,8 +33,8 @@ public class PlayerJoinEventHandler implements Listener {
             Tombola tombola = new Tombola(Database.getTombolaId(player));
             double playerFunds = tombola.getFunds() * 0.8;
 
-            Database.addPlayerBankFunds(player, playerFunds);
-            Database.addEntBankFunds("tombola", tombola.getFunds() * 0.2);
+            Database.addPlayerFunds(player, playerFunds);
+            Database.addEntFunds("tombola", tombola.getFunds() * 0.2);
             Database.setTombolaWon();
             player.sendMessage("Vous avez gagné la tombola ! Vous gagnez " + mainColor + String.format("%.1f", playerFunds) + moneySymbol + ChatColor.RESET + " !");
 

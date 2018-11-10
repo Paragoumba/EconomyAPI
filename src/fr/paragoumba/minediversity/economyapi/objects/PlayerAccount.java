@@ -49,56 +49,13 @@ public class PlayerAccount implements Account {
     }
 
     /**
-     * Permet de récupèrer l'argent présent dans le porte-monnaie du joueur.
-     * @return L'argent dans le porte-monnaie du joueur.
-     */
-    public double getWalletFunds(){
-
-        return Database.getWalletFunds(owner);
-
-    }
-
-    /**
-     * Permet de définir l'argent présent dans le porte-monnaie du joueur.
-     * @param amount L'argent à mettre dans le porte-monnaie du joueur.
-     * @return true si la transaction a réussi, sinon false.
-     */
-    public boolean setWalletFunds(double amount){
-
-        return Database.setWalletFunds(owner, amount);
-
-    }
-
-    /**
-     * Permet d'ajouter de l'argent dans le porte-monnaie du joueur.
-     * @param amount L'argent à ajouter au porte-monnaie du joueur.
-     * @return true si la transaction a réussi, sinon false.
-     */
-    public boolean addWalletFunds(double amount){
-
-        return Database.addWalletFunds(owner, amount);
-
-    }
-
-    /**
-     * Permet de retirer de l'argent dans le porte-monnaie du joueur.
-     * @param amount L'argent à retirer du porte-monnaie du joueur.
-     * @return true si la transaction a réussi, sinon false.
-     */
-    public boolean subWalletFunds(double amount){
-
-        return Database.subWalletFunds(owner, amount);
-
-    }
-
-    /**
      * Permet de récupèrer l'argent présent sur le compte bancaire du joueur.
      * @return L'argent sur le compte bancaire du joueur.
      */
     @Override
-    public double getBankFunds(){
+    public double getFunds(){
 
-        return Database.getPlayerBankFunds(owner);
+        return Database.getPlayerFunds(owner);
 
     }
 
@@ -108,9 +65,9 @@ public class PlayerAccount implements Account {
      * @return true si la transaction a réussi, sinon false.
      */
     @Override
-    public boolean setBankFunds(double amount){
+    public boolean setFunds(double amount){
 
-        return Database.setPlayerBankFunds(owner, amount);
+        return Database.setPlayerFunds(owner, amount);
 
     }
 
@@ -120,9 +77,9 @@ public class PlayerAccount implements Account {
      * @return true si la transaction a réussi, sinon false.
      */
     @Override
-    public boolean addBankFunds(double amount){
+    public boolean addFunds(double amount){
 
-        return Database.addPlayerBankFunds(owner, amount);
+        return Database.addPlayerFunds(owner, amount);
 
     }
 
@@ -132,9 +89,9 @@ public class PlayerAccount implements Account {
      * @return true si la transaction a réussi, sinon false.
      */
     @Override
-    public boolean subBankFunds(double amount){
+    public boolean subFunds(double amount){
 
-        return Database.subPlayerBankFunds(owner, amount);
+        return Database.subPlayerFunds(owner, amount);
 
     }
 }

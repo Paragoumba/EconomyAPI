@@ -3,7 +3,6 @@ package fr.paragoumba.minediversity.economyapi;
 import fr.paragoumba.minediversity.economyapi.commands.APIReloadCommand;
 import fr.paragoumba.minediversity.economyapi.commands.MoneyCommand;
 import fr.paragoumba.minediversity.economyapi.commands.TombolaCommand;
-import fr.paragoumba.minediversity.economyapi.events.PlayerDeathEventHandler;
 import fr.paragoumba.minediversity.economyapi.events.PlayerJoinEventHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -14,7 +13,6 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
-import java.util.Collection;
 import java.util.HashMap;
 
 public class EconomyAPI extends JavaPlugin implements Listener {
@@ -27,7 +25,7 @@ public class EconomyAPI extends JavaPlugin implements Listener {
     public static String accessErrorMessage;
     public static String amountErrorMessage;
     public static String playerErrorMessage;
-    public static HashMap<String, String>commandsArgs = new HashMap<>();
+    public static HashMap<String, String> commandsArgs = new HashMap<>();
 
     public void onEnable() {
 
@@ -46,7 +44,6 @@ public class EconomyAPI extends JavaPlugin implements Listener {
         //Events
         PluginManager pm = this.getServer().getPluginManager();
         pm.registerEvents(new PlayerJoinEventHandler(), this);
-        pm.registerEvents(new PlayerDeathEventHandler(), this);
 
         //Commands
         getCommand("tombola").setExecutor(new TombolaCommand());
@@ -94,6 +91,7 @@ public class EconomyAPI extends JavaPlugin implements Listener {
 
                 }
             }
+
         }, 1200, 72000);
     }
 }

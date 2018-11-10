@@ -32,9 +32,9 @@ public class EnterpriseAccount implements Account {
      * @return L'argent sur le compte bancaire de l'entreprise.
      */
     @Override
-    public double getBankFunds() {
+    public double getFunds() {
 
-        return Database.getEntBankFunds(name);
+        return Database.getEntFunds(name);
 
     }
 
@@ -44,9 +44,9 @@ public class EnterpriseAccount implements Account {
      * @return true si la transaction a réussi, sinon false.
      */
     @Override
-    public boolean setBankFunds(double amount) {
+    public boolean setFunds(double amount) {
 
-        return Database.setEntBankFunds(name, amount);
+        return Database.setEntFunds(name, amount);
 
     }
 
@@ -56,9 +56,9 @@ public class EnterpriseAccount implements Account {
      * @return true si la transaction a réussi, sinon false.
      */
     @Override
-    public boolean addBankFunds(double amount) {
+    public boolean addFunds(double amount) {
 
-        return Database.addEntBankFunds(name, amount);
+        return Database.addEntFunds(name, amount);
 
     }
 
@@ -68,9 +68,9 @@ public class EnterpriseAccount implements Account {
      * @return true si la transaction a réussi, sinon false.
      */
     @Override
-    public boolean subBankFunds(double amount) {
+    public boolean subFunds(double amount) {
 
-        return Database.subEntBankFunds(name, amount);
+        return Database.subEntFunds(name, amount);
 
     }
 }
